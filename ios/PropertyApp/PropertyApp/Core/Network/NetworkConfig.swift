@@ -1,0 +1,6 @@
+import Foundation
+
+enum NetworkConfig {
+    static let baseURL = "http://127.0.0.1:3000"
+    static let timeoutInterval: TimeInterval = 30
+}

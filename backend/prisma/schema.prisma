@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  passwordHash  String
+  firstName String
+  lastName  String
+  listings  Listing[]
+  role      Role      @default(BUYER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  BUYER
+  SELLER
+  AGENT
+  ADMIN
+}
+
+
+model Listing {
+  id          String      @id @default(uuid())
+  title       String
+  description String
+  price       Int
+  currency    String      @default("MYR")
+  city        String
+  country     String      @default("Malaysia")
+  listingType ListingType
+  bedrooms    Int
+  bathrooms   Int
+  areaSqFt    Int
+  isActive    Boolean     @default(true)
+  ownerId     String
+  owner       User        @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+enum ListingType {
+  SALE
+  RENT
+}
